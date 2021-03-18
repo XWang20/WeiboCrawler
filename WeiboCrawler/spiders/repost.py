@@ -10,7 +10,7 @@ class RepostSpider(Spider):
     base_url = 'https://m.weibo.cn/api/statuses/repostTimeline?'
 
     def start_requests(self):
-        mblog_ids = ['4615345245261002']
+        mblog_ids = ['4615345245261002']    # 原微博id文件
         urls = [f"{self.base_url}id={mblog_id}&page=1" for mblog_id in mblog_ids]
         for url in urls:
             yield Request(url, callback=self.parse)
