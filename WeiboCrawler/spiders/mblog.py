@@ -26,7 +26,7 @@ class MblogSpider(Spider):
         page_num = int(response.url.split('=')[-1])
         # 设定采集的时间段
         date_start = datetime.strptime("2019-12-01", '%Y-%m-%d')
-        date_end = datetime.strptime("2021-3-6", '%Y-%m-%d')
+        date_end = datetime.strptime("2021-4-6", '%Y-%m-%d')
         if js['ok']:
             weibos = js['data']['cards']
             for w in weibos:
@@ -76,5 +76,5 @@ class MblogSpider(Spider):
         js = json.loads(html, strict=False)
         weibo_info = js.get('status')
         if weibo_info:
-            mblogItem['content'] = extract_content(text_body)
+            mblogItem['content'] = extract_content(weibo_info['text'])
             yield mblogItem
