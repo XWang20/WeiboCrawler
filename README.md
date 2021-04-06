@@ -1,5 +1,4 @@
 # WeiboCrawler
-[TOC]
 
 ## 项目说明
 
