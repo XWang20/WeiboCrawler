@@ -1,1 +1,3 @@
 *.DS_Store
+WeiboCrawler/__pycache__
+WeiboCrawler/spiders/__pycache__
