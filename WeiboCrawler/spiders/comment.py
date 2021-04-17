@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 import json
 from datetime import datetime
 from scrapy import Request, Spider
@@ -17,14 +18,14 @@ class CommentSpider(Spider):
 
     def parse(self, response):
         js = json.loads(response.text)
-
+        mblog_id = re.search(r'[\d]{16}', response.url).group(0)
         if js['ok']:
             comments = js['data']['data']
             for comment in comments:
                 commentItem = CommentItem()
                 commentItem['_id'] = comment['id']
                 commentItem['comment_user_id'] = comment['user']['id']
-                commentItem['mblog_id'] = comment['mid']
+                commentItem['mblog_id'] = mblog_id
                 commentItem['created_at'] = standardize_date(comment['created_at']).strftime('%Y-%m-%d')
                 commentItem['like_num'] = comment['like_count']
                 commentItem['content'] = extract_content(comment['text'])
@@ -33,7 +34,13 @@ class CommentSpider(Spider):
 
                 if comment['total_number']:
                     secondary_url = 'https://m.weibo.cn/comments/hotFlowChild?cid=' + comment['id']
-                    yield Request(secondary_url, callback=self.parse_secondary_comment)
+                    yield Request(secondary_url, callback=self.parse_secondary_comment, meta={"mblog_id": mblog_id})
+                
+            max_id = js['data']['max_id']
+            max_id_type = js['data']['max_id_type']
+            next_url = f"https://m.weibo.cn/comments/hotflow?id={mblog_id}&mid={mblog_id}&max_id={max_id}&max_id_type={max_id_type}"
+
+            yield Request(next_url, callback=self.parse)
 
     
     def parse_secondary_comment(self, response):
@@ -45,7 +52,7 @@ class CommentSpider(Spider):
                 commentItem = CommentItem()
                 commentItem['_id'] = seccomment['id']
                 commentItem['comment_user_id'] = seccomment['user']['id']
-                commentItem['mblog_id'] = seccomment['mid']
+                commentItem['mblog_id'] = response.meta['mblog_id']
                 commentItem['created_at'] = standardize_date(seccomment['created_at']).strftime('%Y-%m-%d')
                 commentItem['like_num'] = seccomment['like_count']
                 commentItem['content'] = extract_content(seccomment['text'])
