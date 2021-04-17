@@ -63,11 +63,19 @@ scrapy crawl comment
 scrapy crawl user -o user.csv
 ```
 
-3. 添加账号cookie：可在[settings.py](https://github.com/XWang20/WeiboCrawler/blob/main/WeiboCrawler/settings.py)中添加默认头，或在start_request函数中添加。
+3. 添加账号cookie：可在[settings.py](WeiboCrawler/settings.py)中添加默认头，或在start_request函数中添加。
 
-4. 默认下载延迟为3，可在[settings.py](https://github.com/XWang20/WeiboCrawler/blob/main/WeiboCrawler/settings.py)修改DOWNLOAD_DELAY。
+4. 默认下载延迟为3，可在[settings.py](WeiboCrawler/settings.py)修改DOWNLOAD_DELAY。
 
 5. 暂停并恢复爬行：详见 [作业:暂停并恢复爬行 — Scrapy  文档](https://scrapy-16.readthedocs.io/zh_CN/1.6/topics/jobs.html)
+
+6. 默认会爬取二级评论，如果不需要可以在[comment.py](WeiboCrawler/spiders/comment.py)中注释以下代码：
+
+```python
+if comment['total_number']:
+secondary_url = 'https://m.weibo.cn/comments/hotFlowChild?cid=' + comment['id']
+yield Request(secondary_url, callback=self.parse_secondary_comment, meta={"mblog_id": mblog_id})
+```
 
 ## 无cookie版限制的说明
 * 单用户微博最多采集200页，每页最多10条
@@ -77,7 +85,7 @@ scrapy crawl user -o user.csv
 
 ## 设置多线程和代理ip
 
-* 多线程：
+* 多线程：(**单ip池或单账号不建议采用多线程**)
 在[settings.py](https://github.com/XWang20/WeiboCrawler/blob/main/WeiboCrawler/settings.py)文件中将以下代码取消注释: 
 ```python
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
@@ -98,7 +106,7 @@ DOWNLOADER_MIDDLEWARES = {
 }
 ```
 3. 在[settings.py](https://github.com/XWang20/WeiboCrawler/blob/main/WeiboCrawler/settings.py)文件中将DOWNLOAD_DELAY设置为0。
-```
+```python
 DOWNLOAD_DELAY = 0
 ```
 
