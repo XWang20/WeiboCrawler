@@ -2,7 +2,7 @@
 
 ## 项目说明
 
-本项目参考了[dataabc/weibo-crawler](https://github.com/nghuyong/WeiboSpider)和[nghuyong/WeiboSpider](https://github.com/dataabc/weibo-crawler)，感谢他们的开源。
+本项目参考了[dataabc/weibo-crawler](https://github.com/dataabc/weibo-crawler)和[nghuyong/WeiboSpider](https://github.com/nghuyong/WeiboSpider)，感谢他们的开源。
 
 ### 项目介绍
 
