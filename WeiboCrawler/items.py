@@ -13,6 +13,7 @@ class UserItem(Item):
     nick_name = Field()  # 昵称
     gender = Field()  # 性别
     brief_introduction = Field()  # 简介
+    location = Field()  # 首页链接
     mblogs_num = Field()  # 微博数
     follows_num = Field()  # 关注数
     fans_num = Field()  # 粉丝数
