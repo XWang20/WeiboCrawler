@@ -17,7 +17,7 @@ class UserSpider(Spider):
         #     except UnicodeDecodeError:
         #         logger.error(u'%s文件应为utf-8编码，请先将文件编码转为utf-8再运行程序', file_path)
         #         sys.exit()
-        user_ids = ['6588611299'] # 用户id列表
+        user_ids = ['5806943776'] # 用户id列表
         urls = [f'{self.base_url}containerid=100505{user_id}' for user_id in user_ids]
         for url in urls:
             yield Request(url, callback=self.parse)
@@ -35,6 +35,8 @@ class UserSpider(Spider):
             userItem['follows_num'] = userInfo['follow_count']
             userItem['fans_num'] = userInfo['followers_count']
             userItem['authentication'] = userInfo['verified']
+            if userItem['authentication']:
+                userItem['authentication'] = userInfo['verified_reason']
             userItem['vip_level'] = userInfo['mbrank']
             userItem['person_url'] = userInfo['profile_url'].split('?')[0]
             profile_url = f"{self.base_url}containerid=230283{userInfo['id']}"
