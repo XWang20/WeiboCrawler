@@ -116,6 +116,7 @@ DOWNLOAD_DELAY = 0
 * nick_name: 昵称
 * gender: 性别
 * brief_introduction: 简介
+* location: 所在地
 * mblogs_num: 微博数
 * follows_num: 关注数
 * fans_num: 粉丝数
