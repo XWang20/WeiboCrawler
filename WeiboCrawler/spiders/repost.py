@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from scrapy import Request, Spider
 from WeiboCrawler.items import RepostItem
-from WeiboCrawler.spiders.utils import standardize_date, extract_content
+from WeiboCrawler.spiders.utils import standardize_date
 
 class RepostSpider(Spider):
     name = 'repost'
