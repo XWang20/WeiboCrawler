@@ -120,7 +120,7 @@ DOWNLOAD_DELAY = 0
 * follows_num: 关注数
 * fans_num: 粉丝数
 * vip_level: 会员等级
-* authentication: 认证
+* authentication: 认证，对于已认证用户该字段会显示认证信息
 * person_url: 首页链接
 
 ### 微博信息
