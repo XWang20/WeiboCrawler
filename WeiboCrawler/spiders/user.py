@@ -17,7 +17,7 @@ class UserSpider(Spider):
         #     except UnicodeDecodeError:
         #         logger.error(u'%s文件应为utf-8编码，请先将文件编码转为utf-8再运行程序', file_path)
         #         sys.exit()
-        user_ids = ['5806943776'] # 用户id列表
+        user_ids = ['1749127163', '2028810631'] # 用户id列表
         urls = [f'{self.base_url}containerid=100505{user_id}' for user_id in user_ids]
         for url in urls:
             yield Request(url, callback=self.parse)

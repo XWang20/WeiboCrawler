@@ -12,25 +12,25 @@
 
 ### 实例
 抓取用户信息
-![user](https://xtopia-1258297046.cos.ap-shanghai.myqcloud.com/20210406163110.png)
+![user](https://xtopia-1258297046.cos.ap-shanghai.myqcloud.com/20210406163110.jpg)
 抓取用户微博
 ![mblog](https://xtopia-1258297046.cos.ap-shanghai.myqcloud.com/20210406163931.png)
 抓取微博转发
 ![Repost](https://xtopia-1258297046.cos.ap-shanghai.myqcloud.com/20210406164056.png)
 抓取微博评论
-![Comment](https://xtopia-1258297046.cos.ap-shanghai.myqcloud.com/20210406164127.png)
+![comment](https://xtopia-1258297046.cos.ap-shanghai.myqcloud.com/20210406164127.jpg)
 
 ## 使用方法
 ### 拉取项目
 ```
-git clone https://github.com/XWang20/WeiboCrawler.git
+$ git clone https://github.com/XWang20/WeiboCrawler.git
 ```
 
 ### 安装依赖
 本项目Python版本为Python3.8
 ```
-cd WeiboCrawler
-python -m pip install -r requirements.txt
+$ cd WeiboCrawler
+$ python -m pip install -r requirements.txt
 ```
 
 ### 安装数据库（可选）
@@ -38,21 +38,23 @@ python -m pip install -r requirements.txt
 
 ### 运行程序
 #### 基本程序
+在命令行中运行以下命令：
+
 抓取用户信息
 ```
-scrapy crawl user
+$ scrapy crawl user
 ```
 抓取用户微博
 ```
-scrapy crawl mblog
+$ scrapy crawl mblog
 ```
 抓取微博转发
 ```
-scrapy crawl repost
+$ scrapy crawl repost
 ```
 抓取微博评论
 ```
-scrapy crawl comment
+$ scrapy crawl comment
 ```
 
 #### 自定义选项
@@ -60,7 +62,7 @@ scrapy crawl comment
 
 2. 默认输出到数据库中，若需要输出json或csv文件：在命令后加入`-o *.json`或`-o *.csv`，例如：
 ```
-scrapy crawl user -o user.csv
+$ scrapy crawl user -o user.csv
 ```
 
 3. 添加账号cookie：可在[settings.py](WeiboCrawler/settings.py)中添加默认头，或在start_request函数中添加。
