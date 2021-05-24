@@ -24,7 +24,7 @@ class CommentSpider(Spider):
         comments = js['root_comments']
         for comment in comments:
             commentItem = CommentItem()
-            commentItem['_id'] = comment['id']
+            commentItem['_id'] = comment['idstr']
             commentItem['comment_user_id'] = comment['user']['id']
             commentItem['mblog_id'] = mblog_id
             commentItem['created_at'] = standardize_date(comment['created_at']).strftime('%Y-%m-%d')
