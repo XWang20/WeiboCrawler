@@ -75,15 +75,14 @@ $ scrapy crawl user -o user.csv
 
 ```python
 if comment['total_number']:
-secondary_url = 'https://m.weibo.cn/comments/hotFlowChild?cid=' + comment['id']
+secondary_url = 'https://m.weibo.cn/comments/hotFlowChild?cid=' + comment['idstr']
 yield Request(secondary_url, callback=self.parse_secondary_comment, meta={"mblog_id": mblog_id})
 ```
 
 ## 无cookie版限制的说明
 * 单用户微博最多采集200页，每页最多10条
-* 单微博评论最多采集两页，约20条
-* 单微博转发采集无限制
-以上限制都可以通过添加账号cookie解决。
+* 单微博转发、转发采集无限制
+限制可以通过添加账号cookie解决。
 
 ## 设置多线程和代理ip
 

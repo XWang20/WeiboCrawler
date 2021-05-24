@@ -8,40 +8,40 @@ from WeiboCrawler.spiders.utils import standardize_date, extract_content
 
 class CommentSpider(Spider):
     name = 'comment'
-    base_url = 'https://m.weibo.cn/comments/hotflow?'
+    base_url = 'https://api.weibo.cn/2/comments/build_comments?'
 
     def start_requests(self):
-        mblog_ids = ['4615345245261002']
-        urls = [f"{self.base_url}id={mblog_id}&mid={mblog_id}" for mblog_id in mblog_ids]
+        mblog_ids = ['4639315185107606']
+        urls = [f'{self.base_url}is_show_bulletin=2&c=android&s=746fd605&id={mblog_id}&from=10A8195010&gsid=_2AkMolNMzf8NhqwJRmf4dxWzgb49zzQrEieKeyCLoJRM3HRl-wT9jqmwMtRV6AgOZP3LqGBH-29qGRB4vP3j-Hng6DkBJ&count=50&max_id_type=1' for mblog_id in mblog_ids]
+        # cookies = {'WEIBOCN_FROM':'1110006030;','_ga':'GA1.2.761046864.1621402364;', 'WEIBOCN_WM':'20005_0002;', '_T_WM':'95401683092'}
         for url in urls:
-            yield Request(url, callback=self.parse)
+            yield Request(url, callback=self.parse, dont_filter=True, headers={'Host': 'api.weibo.cn'})
 
     def parse(self, response):
         js = json.loads(response.text)
         mblog_id = re.search(r'[\d]{16}', response.url).group(0)
-        if js['ok']:
-            comments = js['data']['data']
-            for comment in comments:
-                commentItem = CommentItem()
-                commentItem['_id'] = comment['id']
-                commentItem['comment_user_id'] = comment['user']['id']
-                commentItem['mblog_id'] = mblog_id
-                commentItem['created_at'] = standardize_date(comment['created_at']).strftime('%Y-%m-%d')
-                commentItem['like_num'] = comment['like_count']
-                commentItem['content'] = extract_content(comment['text'])
-                commentItem['root_comment_id'] = ''
-                yield commentItem
 
-                if comment['total_number']:
-                    secondary_url = 'https://m.weibo.cn/comments/hotFlowChild?cid=' + comment['id']
-                    yield Request(secondary_url, callback=self.parse_secondary_comment, meta={"mblog_id": mblog_id})
+        comments = js['root_comments']
+        for comment in comments:
+            commentItem = CommentItem()
+            commentItem['_id'] = comment['id']
+            commentItem['comment_user_id'] = comment['user']['id']
+            commentItem['mblog_id'] = mblog_id
+            commentItem['created_at'] = standardize_date(comment['created_at']).strftime('%Y-%m-%d')
+            commentItem['like_num'] = comment['like_counts']
+            commentItem['content'] = extract_content(comment['text'])
+            commentItem['root_comment_id'] = ''
+            yield commentItem
+
+            if comment['total_number']:
+                secondary_url = 'https://m.weibo.cn/comments/hotFlowChild?cid=' + comment['idstr']
+                yield Request(secondary_url, callback=self.parse_secondary_comment, meta={"mblog_id": mblog_id})
                 
-            max_id = js['data']['max_id']
-            max_id_type = js['data']['max_id_type']
-            next_url = f"https://m.weibo.cn/comments/hotflow?id={mblog_id}&mid={mblog_id}&max_id={max_id}&max_id_type={max_id_type}"
-
-            yield Request(next_url, callback=self.parse)
-
+        max_id = js['max_id']
+        if max_id > 0:
+            max_id_type = js['max_id_type']
+            next_url = f'{self.base_url}is_show_bulletin=2&c=android&s=746fd605&id={mblog_id}&from=10A8195010&gsid=_2AkMolNMzf8NhqwJRmf4dxWzgb49zzQrEieKeyCLoJRM3HRl-wT9jqmwMtRV6AgOZP3LqGBH-29qGRB4vP3j-Hng6DkBJ&count=50&max_id={max_id}&max_id_type={max_id_type}'
+            yield Request(next_url, callback=self.parse, dont_filter=True, headers={'Host': 'api.weibo.cn'})
     
     def parse_secondary_comment(self, response):
         js = json.loads(response.text)
@@ -58,4 +58,3 @@ class CommentSpider(Spider):
                 commentItem['content'] = extract_content(seccomment['text'])
                 commentItem['root_comment_id'] = seccomment['rootid']
                 yield commentItem
-
