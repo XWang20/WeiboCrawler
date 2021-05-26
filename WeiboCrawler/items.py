@@ -43,6 +43,8 @@ class CommentItem(Item):
     created_at = Field()  # 评论发表时间
     like_num = Field()  # 点赞数
     root_comment_id = Field()   # 根评论id，只有二级评论有该项
+    img_url = Field()
+    img_name = Field()
 
 class RepostItem(Item):
     """ Mblog Repost Information """

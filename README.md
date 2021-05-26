@@ -155,8 +155,9 @@ DOWNLOAD_DELAY = 0
 * created_at: 评论发表时间
 * like_num: 点赞数
 * root_comment_id:  根评论id，只有二级评论有该项
+* img_url:  图片地址
 
 ## 写在最后
-欢迎为本项目贡献力量。贡献可以是提交代码，可以是通过issue提建议（如新功能、改进方案等），也可以是通过issue告知项目存在哪些bug、缺点等。
+欢迎为本项目贡献力量。欢迎大家提交PR、通过issue提建议（如新功能、改进方案等）、通过issue告知项目存在哪些bug、缺点等。
 
 如有问题和交流，也欢迎联系我：<wangxing1027@gmail.com>

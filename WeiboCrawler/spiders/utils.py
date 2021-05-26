@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def standardize_date(created_at):
     """标准化微博发布时间"""

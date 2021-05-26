@@ -93,3 +93,9 @@ MONGO_DB = 'weibo'
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# # 图片存储目录
+# IMAGES_STORE = 'images/'
+# ITEM_PIPELINES = {
+#    'WeiboCrawler.pipelines.ImagesnamePipeline': 300,
+# }
