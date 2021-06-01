@@ -30,6 +30,7 @@ CREATE table userid (
     * 如果为长微博，则`meta`字段中的`longtext`为长微博
     * 若评论数目 > 0，则爬取对应评论，爬取数目不受限制
     * 若转发数目 > 0，则爬取对应转发，爬取数目不受限制
+* 获取评论转发时，获取用户userid值，并把该值保存至数据库
 
 ### settings.py
 * 在`ITEM_PIPELINES`加入了`PostgrePipeline`
