@@ -68,10 +68,11 @@ RETRY_HTTP_CODES = [429, 418, 502]
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'WeiboCrawler.pipelines.WeibocrawlerPipeline': 300,
-    'WeiboCrawler.pipelines.MongoPipeline': 400,
+    # 'WeiboCrawler.pipelines.MongoPipeline': 400,
+    'WeiboCrawler.pipelines.PostgrePipeline': 400
 }
-MONGO_URI = 'localhost'
-MONGO_DB = 'weibo'
+# MONGO_URI = 'localhost'
+# MONGO_DB = 'weibo'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -99,3 +100,14 @@ MONGO_DB = 'weibo'
 # ITEM_PIPELINES = {
 #    'WeiboCrawler.pipelines.ImagesnamePipeline': 300,
 # }
+
+# 设置日志文件
+# from datetime import datetime
+
+# # 文件及路径，log目录需要先建好
+# today = datetime.now()
+# log_file_path = "log/scrapy_{}_{}_{}.log".format(today.year, today.month, today.day)
+
+# # 日志输出
+# LOG_LEVEL = 'DEBUG'
+# LOG_FILE = log_file_path

@@ -1,5 +1,47 @@
 # WeiboCrawler
 
+## 修改说明
+
+在postgreSQL中定义了两个表：mblog表和userid表
+```sql
+CREATE TABLE mblog(
+	lang	text,
+	src		text,
+	cat 	text,
+	subcat 	text,
+	meta 	text,
+	body 	text
+);
+```
+
+```sql
+CREATE table userid (
+	id CHAR(10) PRIMARY KEY,
+	last_crawl date
+);
+```
+
+### pipelines.py
+* 使用了`psycopg2`库连接postgreSQL数据库，将处理的item加入数据库中
+
+### mblog.py
+* 使用`psycopg2`库连接postgreSQL数据库，获取用户id列表和上次爬取的时间
+* 在获取到一条微博时：
+    * 如果为长微博，则`meta`字段中的`longtext`为长微博
+    * 若评论数目 > 0，则爬取对应评论，爬取数目不受限制
+    * 若转发数目 > 0，则爬取对应转发，爬取数目不受限制
+
+### settings.py
+* 在`ITEM_PIPELINES`加入了`PostgrePipeline`
+* 对于每条ip发送的请求，可以setting中的`CONCURRENT_REQUESTS_PER_IP`进行修改
+```
+#每个ip的最大并发数，默认0，代表没有限制
+CONCURRENT_REQUESTS_PER_IP = 100
+```
+
+以下为原来项目的文档
+---
+
 ## 项目说明
 
 本项目参考了[dataabc/weibo-crawler](https://github.com/dataabc/weibo-crawler)和[nghuyong/WeiboSpider](https://github.com/nghuyong/WeiboSpider)，感谢他们的开源。

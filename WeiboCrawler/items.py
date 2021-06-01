@@ -23,34 +23,9 @@ class UserItem(Item):
 
 class MblogItem(Item):
     """ Mblog information """
-    _id = Field()  # 微博id
-    bid = Field()
-    weibo_url = Field()  # 微博URL
-    created_at = Field()  # 微博发表时间
-    like_num = Field()  # 点赞数
-    repost_num = Field()  # 转发数
-    comment_num = Field()  # 评论数
-    content = Field()  # 微博内容
-    user_id = Field()  # 发表该微博用户的id
-    tool = Field()  # 发布微博的工具
-
-class CommentItem(Item):
-    """ Mblog Comment Information """
-    _id = Field()
-    comment_user_id = Field()  # 评论用户的id
-    content = Field()  # 评论的内容
-    mblog_id = Field()  # 评论的微博的id
-    created_at = Field()  # 评论发表时间
-    like_num = Field()  # 点赞数
-    root_comment_id = Field()   # 根评论id，只有二级评论有该项
-    img_url = Field()
-    img_name = Field()
-
-class RepostItem(Item):
-    """ Mblog Repost Information """
-    _id = Field()
-    repost_user_id = Field()  # 转发用户的id
-    content = Field()  # 转发的内容
-    mblog_id = Field()  # 转发的微博的id
-    created_at = Field()  # 转发时间
-    source = Field()    # 转发工具
+    lang = Field()
+    src = Field()
+    cat = Field()
+    subcat = Field()
+    meta = Field()
+    body = Field()
