@@ -58,18 +58,18 @@ $ scrapy crawl comment
 ```
 
 #### 自定义选项
-1. 采集id和时间范围等信息可根据自己实际需要重写`./WeiboCrawler/spiders/*.py`中的`start_requests`函数。
+1. 增加通过关键词检索
 
-2. 默认输出到数据库中，若需要输出json或csv文件：在命令后加入`-o *.json`或`-o *.csv`，例如：
+2. 采集id和时间范围等信息可根据自己实际需要重写`./WeiboCrawler/spiders/*.py`中的`start_requests`函数。
+
+3. 默认输出到数据库中，若需要输出json或csv文件：在命令后加入`-o *.json`或`-o *.csv`，例如：
 ```
 $ scrapy crawl user -o user.csv
 ```
 
-3. 添加账号cookie：可在[settings.py](WeiboCrawler/settings.py)中添加默认头，或在start_request函数中添加。
+4. 添加账号cookie：可在[settings.py](WeiboCrawler/settings.py)中添加默认头，或在start_request函数中添加。
 
-4. 默认下载延迟为3，可在[settings.py](WeiboCrawler/settings.py)修改DOWNLOAD_DELAY。
-
-5. 暂停并恢复爬行：详见 [作业:暂停并恢复爬行 — Scrapy  文档](https://scrapy-16.readthedocs.io/zh_CN/1.6/topics/jobs.html)
+5. 默认下载延迟为3，可在[settings.py](WeiboCrawler/settings.py)修改DOWNLOAD_DELAY。
 
 6. 默认会爬取二级评论，如果不需要可以在[comment.py](WeiboCrawler/spiders/comment.py)中注释以下代码：
 

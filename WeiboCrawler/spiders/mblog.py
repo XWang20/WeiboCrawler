@@ -11,10 +11,17 @@ class MblogSpider(Spider):
 
     def start_requests(self):
         
+        # 通过用户id搜索
         def init_url_by_user_id():
             # crawl mblogs post by users
             user_ids = ['1699432410']
             urls = [f'{self.base_url}containerid=107603{user_id}&page=1' for user_id in user_ids]
+            return urls
+        
+        # 通过关键词搜索
+        def init_url_by_search():
+            key_words = ['']
+            urls = [f'{self.base_url}type=wb&queryVal={key_word}&containerid=100103type=2%26q%3D{key_word}&page=1' for key_word in key_words]
             return urls
         
         urls = init_url_by_user_id()
@@ -32,33 +39,32 @@ class MblogSpider(Spider):
             for w in weibos:
                 if w['card_type'] == 9:
                     weibo_info = w['mblog']
-                    rembloged_status = weibo_info.get('rembloged_status') # 判断是否为转发
-                    if not rembloged_status or not rembloged_status.get('id'):  # 非转发微博
-                        created_at = standardize_date(weibo_info['created_at'])
-                        if date_start <= created_at and created_at <= date_end:
-                            mblogItem = MblogItem()
-                            weiboid = mblogItem['_id'] = weibo_info['id']
-                            mblogItem['bid'] = weibo_info['bid']
-                            mblogItem['user_id'] = weibo_info['user']['id'] if weibo_info['user'] else ''
-                            mblogItem['like_num'] = weibo_info['attitudes_count']
-                            mblogItem['repost_num'] = weibo_info['reposts_count']
-                            mblogItem['comment_num'] = weibo_info['comments_count']
-                            mblogItem['tool'] = weibo_info['source']
-                            mblogItem['created_at'] = created_at.strftime('%Y-%m-%d')
-                            weibo_url = mblogItem['weibo_url'] = 'https://m.weibo.cn/detail/'+weiboid
-                            text_body = mblogItem['content'] = ''
-                            is_long = True if weibo_info.get('pic_num') > 9 else weibo_info.get('isLongText') # 判断是否为长微博
-                            if is_long:
-                                yield Request(weibo_url, callback=self.parse_all_content, meta={'item': mblogItem}, priority=1)
-                            else:
-                                mblogItem['content'] = extract_content(weibo_info['text'])
-                                yield mblogItem
+                    retweeted_status = weibo_info.get('retweeted_status') # 判断是否为转发
+                    created_at = standardize_date(weibo_info['created_at'])
+                    if date_start <= created_at and created_at <= date_end:
+                        mblogItem = MblogItem()
+                        weiboid = mblogItem['_id'] = weibo_info['id']
+                        mblogItem['bid'] = weibo_info['bid']
+                        mblogItem['user_id'] = weibo_info['user']['id'] if weibo_info['user'] else ''
+                        mblogItem['like_num'] = weibo_info['attitudes_count']
+                        mblogItem['repost_num'] = weibo_info['reposts_count']
+                        mblogItem['comment_num'] = weibo_info['comments_count']
+                        mblogItem['tool'] = weibo_info['source']
+                        mblogItem['created_at'] = created_at.strftime('%Y-%m-%d')
+                        weibo_url = mblogItem['weibo_url'] = 'https://m.weibo.cn/detail/'+weiboid
+                        text_body = mblogItem['content'] = ''
+                        is_long = True if weibo_info.get('pic_num') > 9 else weibo_info.get('isLongText') # 判断是否为长微博
+                        if is_long:
+                            yield Request(weibo_url, callback=self.parse_all_content, meta={'item': mblogItem}, priority=1)
+                        else:
+                            mblogItem['content'] = extract_content(weibo_info['text'])
+                            yield mblogItem
 
-                        elif date_end < created_at: # 微博在采集时间段后
-                            continue
-                        else:   # 微博超过需采集的时间
-                            page_num = 0 # 退出采集该用户
-                            break
+                    elif date_end < created_at: # 微博在采集时间段后
+                        continue
+                    else:   # 微博超过需采集的时间
+                        page_num = 0 # 退出采集该用户
+                        break
 
         if js['ok'] and page_num: 
             next_url = response.url.replace('page={}'.format(page_num), 'page={}'.format(page_num+1))
