@@ -21,7 +21,7 @@ class MblogSpider(Spider):
         # 通过关键词搜索
         def init_url_by_search():
             key_words = ['']
-            urls = [f'{self.base_url}type=wb&queryVal={key_word}&containerid=100103type=2%26q%3D{key_word}&page=1' for key_word in key_words]
+            urls = [f'{self.base_url}type=wb&queryVal={key_word}&containerid=100103type=1%26q%3D{key_word}&page=1' for key_word in key_words]
             return urls
         
         urls = init_url_by_user_id()
@@ -36,6 +36,8 @@ class MblogSpider(Spider):
         date_end = datetime.strptime("2021-4-6", '%Y-%m-%d')
         if js['ok']:
             weibos = js['data']['cards']
+            # # if init url by search
+            # weibos = js['data']['cards'][0]['card_group']
             for w in weibos:
                 if w['card_type'] == 9:
                     weibo_info = w['mblog']

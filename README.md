@@ -58,7 +58,11 @@ $ scrapy crawl comment
 ```
 
 #### 自定义选项
-1. 增加通过关键词检索
+1. 关键词检索，需要将`./WeiboCrawler/spiders/mblog.py`中的以下代码取消注释：
+```python
+# if init url by search
+weibos = js['data']['cards'][0]['card_group']
+```
 
 2. 采集id和时间范围等信息可根据自己实际需要重写`./WeiboCrawler/spiders/*.py`中的`start_requests`函数。
 
