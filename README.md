@@ -1,5 +1,11 @@
 # WeiboCrawler
 
+## 更新日志
+
+* (2021.11.17) 
+    * 更新 二级评论突破爬取限制，增加了回复ID。
+    * 修复 在设置中删除了默认为mongo数据库存储的选项。 
+
 ## 项目说明
 
 本项目参考了[dataabc/weibo-crawler](https://github.com/dataabc/weibo-crawler)和[nghuyong/WeiboSpider](https://github.com/nghuyong/WeiboSpider)，感谢他们的开源。
@@ -66,10 +72,23 @@ weibos = js['data']['cards'][0]['card_group']
 
 2. 采集id和时间范围等信息可根据自己实际需要重写`./WeiboCrawler/spiders/*.py`中的`start_requests`函数。
 
-3. 默认输出到数据库中，若需要输出json或csv文件：在命令后加入`-o *.json`或`-o *.csv`，例如：
+3. 输出方式：支持输出到mongo数据库中，或输出json或csv文件。
+
+如果输出json或csv文件，需要在命令后加入`-o *.json`或`-o *.csv`，例如：
 ```
 $ scrapy crawl user -o user.csv
 ```
+
+如果输出到mongo数据库中，需要将`./WeiboCrawler/settings.py`中 mongo 数据库的部分取消注释:
+```
+ITEM_PIPELINES = {
+    'WeiboCrawler.pipelines.MongoPipeline': 400,
+}
+MONGO_URI = 'localhost'
+MONGO_DB = 'weibo'
+```
+
+4. 
 
 4. 添加账号cookie：可在[settings.py](WeiboCrawler/settings.py)中添加默认头，或在start_request函数中添加。
 
@@ -85,7 +104,6 @@ yield Request(secondary_url, callback=self.parse_secondary_comment, meta={"mblog
 
 ## 无cookie版限制的说明
 * 单用户微博最多采集200页，每页最多10条
-* 单微博转发、转发采集无限制
 限制可以通过添加账号cookie解决。
 
 ## 设置多线程和代理ip
@@ -159,7 +177,8 @@ DOWNLOAD_DELAY = 0
 * created_at: 评论发表时间
 * like_num: 点赞数
 * root_comment_id:  根评论id，只有二级评论有该项
-* img_url:  图片地址
+* img_url: 图片地址
+* reply_comment_id: 评论的id，只有二级评论有该项
 
 ## 写在最后
 欢迎为本项目贡献力量。欢迎大家提交PR、通过issue提建议（如新功能、改进方案等）、通过issue告知项目存在哪些bug、缺点等。

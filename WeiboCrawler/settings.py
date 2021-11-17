@@ -24,7 +24,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 1
 DOWNLOAD_TIMEOUT = 15
 # # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 100
@@ -68,10 +68,10 @@ RETRY_HTTP_CODES = [429, 418, 502]
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'WeiboCrawler.pipelines.WeibocrawlerPipeline': 300,
-    'WeiboCrawler.pipelines.MongoPipeline': 400,
+    # 'WeiboCrawler.pipelines.MongoPipeline': 400,
 }
-MONGO_URI = 'localhost'
-MONGO_DB = 'weibo'
+# MONGO_URI = 'localhost'
+# MONGO_DB = 'weibo'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

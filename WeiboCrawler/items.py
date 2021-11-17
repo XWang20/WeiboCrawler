@@ -45,6 +45,7 @@ class CommentItem(Item):
     root_comment_id = Field()   # 根评论id，只有二级评论有该项
     img_url = Field()
     img_name = Field()
+    reply_comment_id =Field()
 
 class RepostItem(Item):
     """ Mblog Repost Information """
