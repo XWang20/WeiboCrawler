@@ -29,7 +29,6 @@ class CommentSpider(Spider):
             commentItem['created_at'] = standardize_date(comment['created_at']).strftime('%Y-%m-%d')
             commentItem['like_num'] = comment['like_counts']
             commentItem['content'] = extract_content(comment['text'])
-            commentItem['root_comment_id'] = ''
             img_url = []
             if 'pic_infos' in comment:
                 for pic in comment['pic_infos']:
@@ -40,7 +39,7 @@ class CommentSpider(Spider):
             if comment['total_number']:
                 cid = comment['idstr']
                 secondary_url = f'https://weibo.com/ajax/statuses/buildComments?is_reload=1&id={cid}&is_show_bulletin=2&is_mix=1&fetch_level=1&count=20&flow=1'
-                yield Request(secondary_url, callback=self.parse_secondary_comment, meta={"mblog_id": mblog_id}, headers={'Host': 'weibo.com'})
+                yield Request(secondary_url, callback=self.parse_secondary_comment, meta={"mblog_id": mblog_id, 'secondary_url': secondary_url}, headers={'Host': 'weibo.com'})
                 
         max_id = js['max_id']
         if max_id > 0:
@@ -65,7 +64,8 @@ class CommentSpider(Spider):
                 commentItem['reply_comment_id'] = seccomment['reply_comment']['idstr']
                 commentItem['root_comment_id'] = seccomment['rootidstr']
                 yield commentItem
-                
+
         while max_id:
-            next_url = f'{response.url}&max_id={max_id}'
-            yield Request(next_url, callback=self.parse_secondary_comment, meta={"mblog_id": response.meta['mblog_id']}, headers={'Host': 'weibo.com'})
+            secondary_url = response.meta['secondary_url']
+            next_url = f'{secondary_url}&max_id={max_id}'
+            yield Request(next_url, callback=self.parse_secondary_comment, meta={"mblog_id": response.meta['mblog_id'], 'secondary_url': secondary_url}, headers={'Host': 'weibo.com'})
