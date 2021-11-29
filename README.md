@@ -6,15 +6,11 @@
     * 更新 二级评论突破爬取限制，增加了回复ID。
     * 修复 在设置中删除了默认为mongo数据库存储的选项。 
 
-## 项目说明
-
-本项目参考了[dataabc/weibo-crawler](https://github.com/dataabc/weibo-crawler)和[nghuyong/WeiboSpider](https://github.com/nghuyong/WeiboSpider)，感谢他们的开源。
-
 ### 项目介绍
 
-新浪微博是国内主要的社交舆论平台，对社交媒体中的数据进行采集是舆论分析的方法之一。
+新浪微博是国内主要的社交舆论平台，对社交媒体中的数据进行采集是舆论分析的方法之一。本项目无需cookie，可以连续爬取一个或多个新浪微博用户信息、用户微博及其微博评论转发。
 
-本项目无需cookie，可以连续爬取一个或多个新浪微博用户信息、用户微博及其微博评论转发。
+📮 **由于本人很少使用，项目很有可能有bug或功能不完善的地方，欢迎大家通过issues或者邮箱告知。**
 
 ### 实例
 抓取用户信息
@@ -87,8 +83,6 @@ ITEM_PIPELINES = {
 MONGO_URI = 'localhost'
 MONGO_DB = 'weibo'
 ```
-
-4. 
 
 4. 添加账号cookie：可在[settings.py](WeiboCrawler/settings.py)中添加默认头，或在start_request函数中添加。
 
@@ -181,6 +175,10 @@ DOWNLOAD_DELAY = 0
 * reply_comment_id: 评论的id，只有二级评论有该项
 
 ## 写在最后
+
+
+本项目参考了[dataabc/weibo-crawler](https://github.com/dataabc/weibo-crawler)和[nghuyong/WeiboSpider](https://github.com/nghuyong/WeiboSpider)，感谢他们的开源。
+
 欢迎为本项目贡献力量。欢迎大家提交PR、通过issue提建议（如新功能、改进方案等）、通过issue告知项目存在哪些bug、缺点等。
 
 如有问题和交流，也欢迎联系我：<wangxing1027@gmail.com>
