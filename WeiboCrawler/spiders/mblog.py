@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from datetime import date
 from datetime import datetime
 from scrapy import Request, Spider
 from WeiboCrawler.items import MblogItem
@@ -21,7 +22,7 @@ class MblogSpider(Spider):
         # 通过关键词搜索
         def init_url_by_search():
             key_words = ['']
-            urls = [f'{self.base_url}type=wb&queryVal={key_word}&containerid=100103type=1%26q%3D{key_word}&page=1' for key_word in key_words]
+            urls = [f'{self.base_url}type=wb&queryVal={key_word}&containerid=100103type=61%26q%3D{key_word}&page=1' for key_word in key_words]
             return urls
         
         urls = init_url_by_user_id()
@@ -33,15 +34,12 @@ class MblogSpider(Spider):
         page_num = int(response.url.split('=')[-1])
         # 设定采集的时间段
         date_start = datetime.strptime("2019-12-01", '%Y-%m-%d')
-        date_end = datetime.strptime("2021-4-6", '%Y-%m-%d')
+        date_end = datetime.strptime("2022-2-8", '%Y-%m-%d')
         if js['ok']:
             weibos = js['data']['cards']
-            # # if init url by search
-            # weibos = js['data']['cards'][0]['card_group']
             for w in weibos:
                 if w['card_type'] == 9:
                     weibo_info = w['mblog']
-                    retweeted_status = weibo_info.get('retweeted_status') # 判断是否为转发
                     created_at = standardize_date(weibo_info['created_at'])
                     if date_start <= created_at and created_at <= date_end:
                         mblogItem = MblogItem()
@@ -54,7 +52,6 @@ class MblogSpider(Spider):
                         mblogItem['tool'] = weibo_info['source']
                         mblogItem['created_at'] = created_at.strftime('%Y-%m-%d')
                         weibo_url = mblogItem['weibo_url'] = 'https://m.weibo.cn/detail/'+weiboid
-                        text_body = mblogItem['content'] = ''
                         is_long = True if weibo_info.get('pic_num') > 9 else weibo_info.get('isLongText') # 判断是否为长微博
                         if is_long:
                             yield Request(weibo_url, callback=self.parse_all_content, meta={'item': mblogItem}, priority=1)
