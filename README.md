@@ -54,7 +54,7 @@ $ scrapy crawl comment
 ```
 
 #### 自定义选项
-1. 关键词检索，需要将`./WeiboCrawler/spiders/mblog.py`中第28行代码替换为`urls = init_url_by_search()`：
+1. 关键词检索，需要将`./WeiboCrawler/spiders/mblog.py`中第28行代码替换为`urls = init_url_by_search()`，并在`init_url_by_search()`中增加关键词列表。
 
 2. 采集id和时间范围等信息可根据自己实际需要重写`./WeiboCrawler/spiders/*.py`中的`start_requests`函数。
 
