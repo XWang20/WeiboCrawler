@@ -11,7 +11,7 @@ class RepostSpider(Spider):
 
     def start_requests(self):
         mblog_ids = ['4750304827933227']    # 原微博id
-        urls = [f"{self.base_url}?aid=01A_NRPbxqZ_cWdRq_vaWFNwalT6hxQsgXtyBQMp-N69iE9eA.&c=weicoabroad&count=50&from=1246893010&gsid=_2A25PP5yNDeRxGeRP7lAV9ifOzDmIHXVqbJdFrDV6PUJbkdAKLWrxkWpNUAqlfRSd0j97oQmhaBDNgeMQRsDYuDEM&i=256a048&id={mblog_id}&lang=zh_CN&s=db684cf5" for mblog_id in mblog_ids]
+        urls = [f"{self.base_url}?aid=01A_NRPbxqZ_cWdRq_vaWFNwalT6hxQsgXtyBQMp-N69iE9eA.&c=weicoabroad&count=50&from=1246893010&i=256a048&id={mblog_id}&lang=zh_CN&s=db684cf5" for mblog_id in mblog_ids]
         for url in urls:
             yield Request(url, callback=self.parse, dont_filter=True, headers={'Host': 'api.weibo.cn'})
 
