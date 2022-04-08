@@ -67,10 +67,8 @@ class MblogSpider(Spider):
 
         if js['ok'] and page_num: 
             next_url = response.url.replace('page={}'.format(page_num), 'page={}'.format(page_num+1))
-            print(next_url)
-
             yield Request(next_url, callback=self.parse)
-                
+
     def parse_all_content(self,response):
         mblogItem = response.meta['item']
         html = response.text
